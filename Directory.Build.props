@@ -15,6 +15,10 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Builds must not contain paths of the build machine (the DLLs record their .pdb path): map the repository
+         folder to a neutral prefix. -->
+    <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=/_/</PathMap>
   </PropertyGroup>
 
   <!-- Compile-time only references: the game and the mod loader provide these at runtime. -->
