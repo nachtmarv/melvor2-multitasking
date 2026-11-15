@@ -1,0 +1,31 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Install mod (dev build)",
+			"type": "shell",
+			"command": "powershell -ExecutionPolicy Bypass -File scripts/install.ps1",
+			"group": { "kind": "build", "isDefault": true },
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "Uninstall mod",
+			"type": "shell",
+			"command": "powershell -ExecutionPolicy Bypass -File scripts/uninstall.ps1",
+			"problemMatcher": []
+		},
+		{
+			"label": "Package release zip",
+			"type": "shell",
+			"command": "powershell -ExecutionPolicy Bypass -File scripts/package.ps1",
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "Run game",
+			"type": "shell",
+			"command": "powershell -NoProfile -Command \"& (Join-Path (Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 3794500').InstallLocation 'Melvor2Modded.exe')\"",
+			"dependsOn": "Install mod (dev build)",
+			"problemMatcher": []
+		}
+	]
+}

@@ -1,0 +1,44 @@
+<Project>
+  <!--
+    Shared build settings. The game defaults to the Steam install (found through the registry) and must have the mod
+    loader installed. Override GameDir on the command line when the game lives elsewhere:
+      dotnet build -p:GameDir="D:\Games\Melvor Idle 2"
+  -->
+  <PropertyGroup>
+    <GameDir Condition="'$(GameDir)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 3794500@InstallLocation)</GameDir>
+    <GameDataDir>$(GameDir)\data_GamesByMalcs.Melvor2_windows_x86_64</GameDataDir>
+
+    <!-- The loader and the Harmony it ships for all mods, as installed into the game by Melvor2Modded.exe. -->
+    <ModLoaderDir>$(GameDir)\modloader</ModLoaderDir>
+
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <!-- Compile-time only references: the game and the mod loader provide these at runtime. -->
+  <ItemGroup>
+    <Reference Include="GamesByMalcs.Melvor2">
+      <HintPath>$(GameDataDir)\GamesByMalcs.Melvor2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="GodotSharp">
+      <HintPath>$(GameDataDir)\GodotSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="MelvorModLoader">
+      <HintPath>$(ModLoaderDir)\MelvorModLoader.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(ModLoaderDir)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="CheckModLoaderInstalled" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(ModLoaderDir)\MelvorModLoader.dll')"
+           Text="Mod loader not found in $(ModLoaderDir). Install it first (melvor2-modloader: scripts/install.ps1, or run Melvor2Modded.exe once)." />
+  </Target>
+</Project>

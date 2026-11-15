@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>MultitaskingMod</AssemblyName>
+    <RootNamespace>MultitaskingMod</RootNamespace>
+    <Version>0.3.2</Version>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+
+    <!-- Written to mod.json by the GenerateModManifest target below. -->
+    <ModId>Multitasking</ModId>
+    <ModName>Multitasking</ModName>
+    <ModAuthor>nachtmarv</ModAuthor>
+    <ModDescription>Train all skills at the same time.</ModDescription>
+  </PropertyGroup>
+
+  <Target Name="GenerateModManifest" AfterTargets="Build">
+    <PropertyGroup>
+      <ModManifestJson>
+{
+  "id": "$(ModId)",
+  "name": "$(ModName)",
+  "version": "$(Version)",
+  "author": "$(ModAuthor)",
+  "description": "$(ModDescription)",
+  "assembly": "$(AssemblyName).dll"
+}
+      </ModManifestJson>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(OutDir)mod.json" Lines="$(ModManifestJson.Trim())" Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
+
+</Project>
